@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="?android:attr/listPreferredItemHeight"
+    android:background="?attr/selectableItemBackground">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_margin="8dp">
+        <com.google.developer.bugmaster.views.DangerLevelView
+            android:background="@drawable/background_danger"
+            android:id="@+id/danger_level_main"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:textColor="#FFFFFF"
+            android:gravity="center"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+            tools:text="3"
+            android:layout_gravity="center">
+        </com.google.developer.bugmaster.views.DangerLevelView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.93"
+        android:gravity="start|center_vertical"
+        android:orientation="vertical"
+        android:layout_marginStart="8dp"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/friendly_name_main"
+            android:textAppearance="?android:textAppearanceLarge"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/scientific_name_main"
+            android:textAppearance="?android:textAppearanceMedium"
+            />
+
+    </LinearLayout>
+
+</LinearLayout>

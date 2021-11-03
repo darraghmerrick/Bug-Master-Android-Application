@@ -1,0 +1,78 @@
+Bug Master Exam Description
+
+Database initialization
+//In MainActivity;
+1. Create an instance of the DatabaseManager
+databaseManager = DatabaseManager.getInstance(this);
+
+2. Call the loadData method which will;
+//Create a cursor of all insects from the database, with the friendly name default sort order.
+Cursor cursor = databaseManager.queryAllInsects(sortOrder);
+//Set the cursor to the current row in the adapter, using the setCursor method.
+mAdapter.setCursor(cursor);
+
+3. In databaseManager.queryAllInsects(sortOrder);
+//A Readable database is all that is needed, as we are not deleting or adding insects
+SQLiteDatabase db = mBugsDbHelper.getReadableDatabase();
+return  (as a cursor) db.query(BugsDbContract.InsectContract.TABLE_NAME,
+                BugsDbContract.InsectContract.INSECT_COLUMNS_PROJECTION,
+                null, null, null, null, sortOrder);
+
+4. BugsDbHelper
+// BugsDbHelper is a Database helper class to facilitate creating and updating the database from the chosen schema.
+// This is only run on the first running of the app After that the database persists and does not need to be created each time.
+//If you were adding or removing insects or columns of insects, that would be done here and the DATABASE_VERSION would be updated.
+
+// On the first run;
+onCreate(SQLiteDatabase db) {
+//The database layout is created and the data that will be stored in each column. Integer and Text in this case;
+String builder = "CREATE TABLE " + BugsDbContract.InsectContract.TABLE_NAME + " ("
+                + BugsDbContract.InsectContract._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + BugsDbContract.InsectContract.COLUMN_FRIENDLY_NAME + " TEXT NOT NULL, "
+                + BugsDbContract.InsectContract.COLUMN_SCIENTIFIC_NAME + " TEXT NOT NULL, "
+                + BugsDbContract.InsectContract.COLUMN_CLASSIFICATION + " TEXT NOT NULL, "
+                + BugsDbContract.InsectContract.COLUMN_IMAGE_ASSET + " TEXT NOT NULL, "
+                + BugsDbContract.InsectContract.COLUMN_DANGER_LEVEL + " INTEGER NOT NULL,"
+                + "UNIQUE (" + BugsDbContract.InsectContract.COLUMN_FRIENDLY_NAME + ") ON CONFLICT REPLACE);";
+}
+
+5.the readInsectsFromResources method
+readInsectsFromResources(db); is called.
+//The database is built here line by line
+String line;
+        while ((line = reader.readLine()) != null) {
+
+            builder.append(line);
+//One line will look this;
+{  "insects": [{  "friendlyName": "Black Widow","scientificName": "Latrodectus mactans", "classification": "Arachnida", "imageAsset": "spider.png",
+     "dangerLevel": 10},
+//
+
+//Save each line as a string;
+final String rawJson = builder.toString();
+//Create a JSONArray of JSONObjects of unParsed insect Data
+        JSONObject rawSingleInsect = new JSONObject(rawJson);
+        JSONArray rawInsectsData = rawSingleInsect.getJSONArray(BugsDbUtils.UTILS_LIST);
+        //ContentValues are used to store a set of values that the ContentResolver can process.
+        ContentValues[] parsedInsectsData = new ContentValues[rawInsectsData.length()];
+
+//Parse JSON data and insert it into the provided database instance;
+//Create a JSONArray of JSONObjects of unParsed insect Data
+        JSONObject rawInsectsObject = new JSONObject(rawJson);
+        JSONArray rawInsectsArray = rawInsectsObject.getJSONArray(BugsDbUtils.UTILS_LIST);
+//ContentValues are used to store a set of values that the ContentResolver can process.
+        ContentValues[] parsedInsectsData = new ContentValues[rawInsectsArray.length()];
+
+         //Use the BugsDbUtils class to generate keys, to pull values from Insect.class
+         // The result is a single parsed insect with the relevant data fields
+         //Row by row insert the data into each column
+
+
+Populating the screen with the Data using InsectRecyclerAdapter
+
+1. The adapter provides the Recyclerview with new views when needed.
+   The adapter binds data from the insect database.
+   The adapter sends views to the recycerView in a ViewHolder.
+   The Viewholder contains a reference to the rootview.
+   The viewholder caches the view objects that are going to be used to polulate the views with data.
+   The layout Manager tells the recycle view how to lay out the views.

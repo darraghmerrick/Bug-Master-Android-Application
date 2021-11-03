@@ -1,0 +1,58 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 31
+    buildToolsVersion '28.0.3'
+
+    defaultConfig {
+        applicationId "com.google.developer.bugmaster"
+        minSdkVersion 21
+        targetSdkVersion 31
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    //noinspection GradleCompatible
+    implementation 'com.android.support:appcompat-v7:25.4.0'
+    //noinspection GradleCompatible
+    implementation 'com.android.support:recyclerview-v7:25.4.0'
+    //noinspection GradleCompatible
+    implementation 'com.android.support:design:25.4.0'
+    //noinspection GradleCompatible
+    implementation 'com.android.support:preference-v7:25.4.0'
+    annotationProcessor 'com.jakewharton:butterknife:8.5.1'
+
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
+    implementation 'com.android.support.constraint:constraint-layout:2.0.4'
+
+    //Espresso Testing dependencies
+    def espressoVersion = '3.0.1'
+    def testRunnerVersion = '1.0.1'
+    //noinspection GradleCompatible
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test:rules:1.0.2'
+
+    //Espresso core
+    //androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
+    androidTestImplementation "com.android.support.test:runner:${testRunnerVersion}"
+    androidTestImplementation "com.android.support.test:rules:${testRunnerVersion}"
+    androidTestImplementation "com.android.support.test.espresso:espresso-core:${espressoVersion}"
+    androidTestImplementation "com.android.support.test.espresso:espresso-contrib:${espressoVersion}"
+    androidTestImplementation "com.android.support.test.espresso:espresso-intents:${espressoVersion}"
+
+    configurations.androidTestCompile.dependencies.each { androidTestCompileDependency ->
+        androidTestCompileDependency.exclude group: 'com.android.support'
+    }
+}
